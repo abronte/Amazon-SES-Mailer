@@ -4,6 +4,7 @@ require 'hmac'
 require 'hmac-sha2'
 require 'base64'
 require 'cgi'
+require 'mail'
 
 module AmazonSes
   class Mailer
@@ -29,7 +30,7 @@ module AmazonSes
       headers = { "x-amzn-authorization" => full_signature,
                   "Date"                 => sig_timestamp }
                   
-      data = request_data(msg.to_s)
+      data = request_data(msg)
 
       http.post("/", data, headers).body
     end
@@ -37,14 +38,20 @@ module AmazonSes
     def deliver_async(msg)
       Thread.start do
         resp = deliver(msg)
-        yield resp if block_given?
+        yield resp if block_given? 
       end
     end
 
     private
 
     def request_data(msg)
-      data = CGI::escape(Base64::encode64(msg))
+      msg_str = if Hash === msg
+        Mail.new(msg).to_s
+      else
+        msg.to_s
+      end
+      
+      data = CGI::escape(Base64::encode64(msg_str))
       time = CGI::escape(url_timestamp)
 
       "AWSAccessKeyId=#{@access_key}&Action=SendRawEmail&RawMessage.Data=#{data}&Timestamp=#{time}&Version=#{@version}"

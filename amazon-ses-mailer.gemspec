@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.description = %q{Amazon SES mailer}
   
   s.add_dependency "ruby-hmac"
+  s.add_dependency "mail"
 
   s.rubyforge_project = "amazon-ses-mailer"
 
