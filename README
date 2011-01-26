@@ -1,0 +1,7 @@
+Simple ruby class that implements Amazon SES API
+
+Currently this only supports raw message sending.
+
+Instructions
+- Add your AWS access and secret keys
+- Call deliver with your MIME encoded email as a param
