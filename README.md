@@ -1,10 +1,10 @@
-= Amazon SES Mailer
+# Amazon SES Mailer
 Implements Amazon SES API.
 
-= Limitations
-- Currently this only supports raw message sending.
+# Limitations
+Currently it only supports raw message sending.
 
-= Examples
+# Examples
 
 Create a mailer class and send a message
 
