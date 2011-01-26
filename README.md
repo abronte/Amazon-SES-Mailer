@@ -6,14 +6,18 @@ Currently it only supports raw message sending.
 
 # Examples
 
-Create a mailer class and send a message
+Create a mailer instance
 
 	mailer = AmazonSES::Mailer.new(secret_key: __, access_key: __)
     
+Deliver a message
+
 	mailer.deliver to:      'foo@example.com',
 				   from:    'bar@example.com',
 				   subject: 'This is a subject',
 				   body:    'And this is the body'
+
+Other delivery options
     
 	mail = Mail.new { ... }
     m.deliver(mail)
