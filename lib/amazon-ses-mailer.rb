@@ -29,14 +29,15 @@ module AmazonSes
       headers = { "x-amzn-authorization" => full_signature,
                   "Date"                 => sig_timestamp }
                   
-      data = request_data(msg)
+      data = request_data(msg.to_s)
 
       http.post("/", data, headers).body
     end
     
     def deliver_async(msg)
       Thread.start do
-        yield deliver(msg)
+        resp = deliver(msg)
+        yield resp if block_given?
       end
     end
 
