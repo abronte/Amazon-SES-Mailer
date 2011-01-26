@@ -23,9 +23,13 @@ module AmazonSes
 
     def deliver(msg)
       @time = Time.now
-
-      http = Net::HTTP.new(@host, 443)
-      http.use_ssl = true
+      
+      if @endpoint.start_with? 'https'
+        http = Net::HTTP.new(@host, 443)
+        http.use_ssl = true
+      else
+        http = Net::HTTP.new(@host)
+      end
       
       headers = { "x-amzn-authorization" => full_signature,
                   "Date"                 => sig_timestamp }
