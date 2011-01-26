@@ -1,0 +1,17 @@
+PATH
+  remote: .
+  specs:
+    amazon-ses-mailer (0.0.1)
+      ruby-hmac
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    ruby-hmac (0.4.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  amazon-ses-mailer!
+  ruby-hmac
