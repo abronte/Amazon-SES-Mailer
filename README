@@ -5,3 +5,12 @@ Currently this only supports raw message sending.
 Instructions
 - Add your AWS access and secret keys
 - Call deliver with your MIME encoded email as a param
+
+Examples
+
+	m = AmazonSES::Mailer.new(secret_key: __, access_key: __)
+	m.deliver to:      'foo@example.com',
+			  from:    'bar@example.com',
+			  subject: 'This is a subject',
+			  body:    'And this is the body'
+			  
