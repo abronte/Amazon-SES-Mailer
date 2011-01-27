@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "amazon-ses-mailer"
   s.version     = AmazonSes::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Eli Fox-Epstein", 'abronte']
-  s.email       = ["eli@redhyphen.com"]
+  s.authors     = ["Eli Fox-Epstein", 'Adam Bronte']
+  s.email       = ["eli@redhyphen.com", "adam@brontesaurus.com"]
   s.homepage    = ""
   s.summary     = %q{Amazon SES mailer}
   s.description = %q{Amazon SES mailer}
