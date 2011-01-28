@@ -13,6 +13,7 @@ module AmazonSes
       @version  = opts[:version]  || '2010-12-01'
       @endpoint = opts[:endpoint] || 'https://email.us-east-1.amazonaws.com/'
       @host     = opts[:host]     || 'email.us-east-1.amazonaws.com'
+      @async    = !!opts[:async]
       
       raise "Access key needed" unless opts.key? :access_key
       raise "Secret key needed" unless opts.key? :secret_key
@@ -22,6 +23,14 @@ module AmazonSes
     end
 
     def deliver(msg)
+      if @async
+        deliver_async(msg)
+      else
+        deliver_now(msg)
+      end
+    end
+      
+    def deliver_now(msg)  
       @time = Time.now
       
       if @endpoint.start_with? 'https'
@@ -41,7 +50,7 @@ module AmazonSes
     
     def deliver_async(msg)
       Thread.start do
-        resp = deliver(msg)
+        resp = deliver_now(msg)
         yield resp if block_given? 
       end
     end
@@ -49,6 +58,7 @@ module AmazonSes
     private
 
     def request_data(msg)
+            
       msg_str = if Hash === msg
         Mail.new(msg).to_s
       else
