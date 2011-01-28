@@ -9,14 +9,22 @@ Implements Amazon SES API.
 - `host`: SES endpoint host
 
 # Limitations
-Currently it only supports raw message sending.
+- Currently it only supports raw message sending.
+- Rails support is not very well tested.
+
+# Rails Example
+
+Put in `config/environments/env.rb`:
+
+	mailer = AmazonSes::Mailer.new(secret_key: __, access_key: __)
+    config.action_mailer.deliver_method = mailer
 
 # Examples
 
 Create a mailer instance
 
 	mailer = AmazonSes::Mailer.new(secret_key: __, access_key: __)
-    
+
 Deliver a message
 
 	mailer.deliver to:      'foo@example.com',
