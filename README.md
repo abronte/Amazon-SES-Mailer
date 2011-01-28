@@ -15,7 +15,7 @@ Currently it only supports raw message sending.
 
 Create a mailer instance
 
-	mailer = AmazonSES::Mailer.new(secret_key: __, access_key: __)
+	mailer = AmazonSes::Mailer.new(secret_key: __, access_key: __)
     
 Deliver a message
 
