@@ -32,3 +32,8 @@ Other delivery options
 	File.open('/path/to/raw/email') do |f|
       m.deliver(f.read)	
 	end
+	
+# Contributors
+- Adam Bronte
+- Eli Fox-Epstein
+- Hans Hasselberg
