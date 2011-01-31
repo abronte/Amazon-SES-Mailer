@@ -17,7 +17,7 @@ Implements Amazon SES API.
 Put in `config/environments/env.rb`:
 
 	mailer = AmazonSes::Mailer.new(secret_key: __, access_key: __)
-    config.action_mailer.deliver_method = mailer
+    config.action_mailer.delivery_method = mailer
 
 # Examples
 
