@@ -20,6 +20,18 @@ module AmazonSes
       @access_key = opts[:access_key]
       @secret_key = opts[:secret_key]
     end
+    
+    ##### Start ActionMailer-specific stuff #####
+    attr_accessor :settings
+    
+    def new(*args)
+      self
+    end
+    
+    def deliver!(msg)
+      deliver(msg)
+    end
+    ##### End ActionMailer-specific stuff #####
 
     def deliver(msg)
       @time = Time.now
