@@ -16,14 +16,14 @@ Implements Amazon SES API.
 
 Put in `config/environments/env.rb`:
 
-	mailer = AmazonSes::Mailer.new(secret_key: __, access_key: __)
+	mailer = AmazonSes::Mailer.new({:access_key => "abc", :secret_key => "123"})
     config.action_mailer.delivery_method = mailer
 
 # Examples
 
 Create a mailer instance
 
-	mailer = AmazonSes::Mailer.new(secret_key: __, access_key: __)
+	mailer = AmazonSes::Mailer.new({:access_key => "abc", :secret_key => "123"})
 
 Deliver a message
 
