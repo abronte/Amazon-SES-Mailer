@@ -9,13 +9,15 @@ require 'mail'
 module AmazonSes
   class Mailer
 
-    def initialize(opts)
-      @version  = opts[:version]  || '2010-12-01'
-      @endpoint = opts[:endpoint] || 'https://email.us-east-1.amazonaws.com/'
-      @host     = opts[:host]     || 'email.us-east-1.amazonaws.com'
+    attr_accessor :version, :endpoint, :host
 
-      raise "Access key needed" unless opts.key? :access_key
-      raise "Secret key needed" unless opts.key? :secret_key
+    def initialize(opts = {})
+      @version  = opts.fetch(:version, '2010-12-01')
+      @endpoint = opts.fetch(:endpoint, 'https://email.us-east-1.amazonaws.com/')
+      @host     = opts.fetch(:host, 'email.us-east-1.amazonaws.com')
+
+      raise ArgumentError, "Access key needed" unless opts.key? :access_key
+      raise ArgumentError, "Secret key needed" unless opts.key? :secret_key
 
       @access_key = opts[:access_key]
       @secret_key = opts[:secret_key]
