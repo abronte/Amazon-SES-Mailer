@@ -8,26 +8,26 @@ require 'mail'
 
 module AmazonSes
   class Mailer
-    
+
     def initialize(opts)
       @version  = opts[:version]  || '2010-12-01'
       @endpoint = opts[:endpoint] || 'https://email.us-east-1.amazonaws.com/'
       @host     = opts[:host]     || 'email.us-east-1.amazonaws.com'
-      
+
       raise "Access key needed" unless opts.key? :access_key
       raise "Secret key needed" unless opts.key? :secret_key
-      
+
       @access_key = opts[:access_key]
       @secret_key = opts[:secret_key]
     end
-    
+
     ##### Start ActionMailer-specific stuff #####
     attr_accessor :settings
-    
+
     def new(*args)
       self
     end
-    
+
     def deliver!(msg)
       deliver(msg)
     end
@@ -35,32 +35,34 @@ module AmazonSes
 
     def deliver(msg)
       @time = Time.now
-      
+
       if @endpoint.start_with? 'https'
         http = Net::HTTP.new(@host, 443)
         http.use_ssl = true
       else
         http = Net::HTTP.new(@host)
       end
-      
+
       headers = { "x-amzn-authorization" => full_signature,
                   "Date"                 => sig_timestamp }
-                  
+
       data = request_data(msg)
 
-      http.post("/", data, headers).body
+      http.post("/", data, headers).body.tap do |response|
+        Rails.logger.debug response if defined?(Rails)
+      end
     end
 
     private
 
     def request_data(msg)
-            
+
       msg_str = if Hash === msg
         Mail.new(msg).to_s
       else
         msg.to_s
       end
-      
+
       data = CGI::escape(Base64::encode64(msg_str))
       time = CGI::escape(url_timestamp)
 
@@ -71,7 +73,7 @@ module AmazonSes
       @time.gmtime.strftime('%Y-%m-%dT%H:%M:%S.000Z')
     end
 
-    def sig_timestamp 
+    def sig_timestamp
       @time.gmtime.strftime('%a, %d %b %Y %H:%M:%S GMT')
     end
 

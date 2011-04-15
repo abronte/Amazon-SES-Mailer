@@ -11,9 +11,11 @@ Gem::Specification.new do |s|
   s.homepage    = ""
   s.summary     = %q{Amazon SES mailer}
   s.description = %q{Amazon SES mailer}
-  
+
   s.add_dependency "ruby-hmac"
   s.add_dependency "mail"
+  s.add_development_dependency "rspec", "~> 2.5.0"
+  s.add_development_dependency "fakeweb", "~> 1.3.0"
 
   s.rubyforge_project = "amazon-ses-mailer"
 
