@@ -9,15 +9,17 @@ require 'mail'
 module AmazonSes
   class Mailer
 
-    attr_accessor :version, :endpoint, :host
+    attr_accessor :version, :endpoint, :host, :logger, :log_level
 
     def initialize(opts = {})
-      @version  = opts.fetch(:version, '2010-12-01')
-      @endpoint = opts.fetch(:endpoint, 'https://email.us-east-1.amazonaws.com/')
-      @host     = opts.fetch(:host, 'email.us-east-1.amazonaws.com')
-
-      raise ArgumentError, "Access key needed" unless opts.key? :access_key
-      raise ArgumentError, "Secret key needed" unless opts.key? :secret_key
+      @version   = opts.fetch(:version,   '2010-12-01')
+      @endpoint  = opts.fetch(:endpoint,  'https://email.us-east-1.amazonaws.com/')
+      @host      = opts.fetch(:host,      'email.us-east-1.amazonaws.com')
+      @logger    = opts.fetch(:logger,    defined?(Rails) && Rails.logger)
+      @log_level = opts.fetch(:log_level, :debug)
+      
+      raise ArgumentError, 'Access key needed' unless opts.key? :access_key
+      raise ArgumentError, 'Secret key needed' unless opts.key? :secret_key
 
       @access_key = opts[:access_key]
       @secret_key = opts[:secret_key]
@@ -30,28 +32,28 @@ module AmazonSes
       self
     end
 
-    def deliver!(msg)
-      deliver(msg)
+    def deliver!(message)
+      deliver message
     end
     ##### End ActionMailer-specific stuff #####
 
     def deliver(msg)
       @time = Time.now
 
-      if @endpoint.start_with? 'https'
-        http = Net::HTTP.new(@host, 443)
+      if endpoint.start_with? 'https'
+        http = Net::HTTP.new(host, 443)
         http.use_ssl = true
       else
-        http = Net::HTTP.new(@host)
+        http = Net::HTTP.new(host)
       end
 
-      headers = { "x-amzn-authorization" => full_signature,
-                  "Date"                 => sig_timestamp }
+      headers = { 'x-amzn-authorization' => full_signature,
+                  'Date'                 => sig_timestamp }
 
       data = request_data(msg)
 
-      http.post("/", data, headers).body.tap do |response|
-        Rails.logger.debug response if defined?(Rails)
+      http.post('/', data, headers).body.tap do |response|
+       logger.send(log_level, "AmazonSES: #{response}") if logger
       end
     end
 

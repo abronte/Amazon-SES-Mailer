@@ -49,7 +49,7 @@ describe AmazonSes::Mailer do
       Object.const_set "Rails", Module.new
       ::Rails.stub :logger => mock(:logger)
 
-      ::Rails.logger.should_receive(:debug).with("Success")
+      ::Rails.logger.should_receive(:debug).with("AmazonSES: Success")
       subject.deliver(mail)
 
       Object.class_eval { remove_const "Rails" }

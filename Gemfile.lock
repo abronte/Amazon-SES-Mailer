@@ -37,4 +37,6 @@ PLATFORMS
 DEPENDENCIES
   amazon-ses-mailer!
   fakeweb (~> 1.3.0)
+  mail
   rspec (~> 2.5.0)
+  ruby-hmac
