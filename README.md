@@ -46,3 +46,9 @@ Other delivery options
 - Eli Fox-Epstein
 - Hans Hasselberg
 - Gabriel Engel
+
+# Contributing
+Pull requests are very welcome. Please write specs for new functionality and be sure the old ones pass.
+
+    bundle exec rake spec
+
