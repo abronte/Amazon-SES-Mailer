@@ -6,7 +6,6 @@ require 'base64'
 require 'cgi'
 require 'mail'
 require 'date'
-require 'strftime-fix'
 
 module AmazonSes
   class Mailer
@@ -76,11 +75,19 @@ module AmazonSes
     end
 
     def url_timestamp
-      @time.gmtime._strftime('%Y-%m-%dT%H:%M:%S.000Z')
+      strftime(@time, '%Y-%m-%dT%H:%M:%S.000Z')
     end
 
     def sig_timestamp
-      @time.gmtime._strftime('%a, %d %b %Y %H:%M:%S GMT')
+      strftime(@time, '%a, %d %b %Y %H:%M:%S GMT')
+    end
+
+    def strftime(time, format)
+      if time.gmtime.respond_to?(:strftime_nolocale)
+        time.gmtime.strftime_nolocale(format)
+      else
+        time.gmtime.strftime(format)
+      end
     end
 
     def generate_sig
