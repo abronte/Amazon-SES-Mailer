@@ -59,4 +59,35 @@ describe AmazonSes::Mailer do
       expect { subject.deliver(mail) }.to_not raise_error
     end
   end
+
+  # TODO: test this new strftime
+  context "when in a translated environment" do
+    before do
+      @amazon_ses = AmazonSes::Mailer.new(
+        :access_key => "abc",
+        :secret_key => "123"
+      )
+    end
+
+    it "uses original strftime" do
+      @amazon_ses.send(:strftime, Time.utc(1970,"nov",05), "%a").should == "Thu"
+    end
+
+    it "uses strftime_nolocale" do
+      # Sample implementation of localized strftime - in Portuguese
+      class Time
+        Date::PORTUGUESE_ABBR_DAYNAMES = %w(Dom Seg Ter Qua Qui Sex Sab)
+        alias :strftime_nolocale :strftime
+        def strftime(format)
+          format = format.dup
+          format.gsub!(/%a/, Date::PORTUGUESE_ABBR_DAYNAMES[self.wday])
+          self.strftime_nolocale(format)
+        end
+      end
+
+      Time.utc(1970,"nov",05).strftime("%a").should == "Qui"
+      @amazon_ses.send(:strftime, Time.utc(1970,"nov",05), "%a").should == "Thu"
+    end
+  end
+  
 end
