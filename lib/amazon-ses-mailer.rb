@@ -76,19 +76,11 @@ module AmazonSes
     end
 
     def url_timestamp
-      if @time.gmtime.respond_to?(:strftime_nolocale)
-        @time.gmtime.strftime_nolocale('%Y-%m-%dT%H:%M:%S.000Z')
-      else
-        @time.gmtime.strftime('%Y-%m-%dT%H:%M:%S.000Z')
-      end
+      @time.gmtime._strftime('%Y-%m-%dT%H:%M:%S.000Z')
     end
 
     def sig_timestamp
-      if @time.gmtime.respond_to?(:strftime_nolocale)
-        @time.gmtime.strftime_nolocale('%a, %d %b %Y %H:%M:%S GMT')
-      else
-        @time.gmtime.strftime('%a, %d %b %Y %H:%M:%S GMT')
-      end
+      @time.gmtime._strftime('%a, %d %b %Y %H:%M:%S GMT')
     end
 
     def generate_sig
