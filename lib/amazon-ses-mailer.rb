@@ -5,6 +5,8 @@ require 'hmac-sha2'
 require 'base64'
 require 'cgi'
 require 'mail'
+require 'date'
+require 'strftime-fix'
 
 module AmazonSes
   class Mailer
