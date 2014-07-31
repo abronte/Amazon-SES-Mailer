@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = ""
   s.summary     = %q{Amazon SES mailer}
   s.description = %q{Amazon SES mailer}
+  s.license     = 'MIT'
 
   s.add_dependency "ruby-hmac"
   s.add_dependency "mail"
